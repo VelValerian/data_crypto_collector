@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "data-crypto-collector"
+version = "0.1.0"
+description = ""
+authors = ["Valerian <@VelValerian>"]
+readme = "README.md"
+packages = [{include = "data_crypto_collector"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+binance-futures-connector = "^4.0.0"
+pandas = "^2.0.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
