@@ -15,13 +15,21 @@ def fetch_historical_data(pair, interval, limit, date_start, end_time):
         end_time = int(date.strptime(current_date, '%Y-%m-%d %H:%M:%S').timestamp() * 1000)
     else:
         end_time = int(date.strptime(end_time, '%Y-%m-%d %H:%M:%S').timestamp() * 1000)
-    #
-    # while start_time<end_time:
 
-    klines_data = client.continuous_klines(pair=pair, contractType='PERPETUAL', interval=interval,
-                                               startTime=start_time, endTime=end_time, limit=limit)
+    while start_time < end_time:
+        print(start_time)
+        print(type(start_time))
+        last_time = start_time + (300000 * limit)
+        if last_time < end_time:
+            klines_data = client.continuous_klines(pair=pair, contractType='PERPETUAL', interval=interval,
+                                              startTime=start_time, limit=limit)
+        else:
+            klines_data = client.continuous_klines(pair=pair, contractType='PERPETUAL', interval=interval,
+                                              startTime=start_time, endTime=end_time, limit=limit)
 
-    klines_df += klines_data
+        df = pd.DataFrame(klines_data)
+        start_time = df.iloc[-1, 0] + (300000)
+        klines_df += klines_data
 
     df = pd.DataFrame(klines_df, columns=["timestamp", "open", "high", "low", "close", "volume", "close_time",
                                         "quote_asset_volume", "number_of_trades", "taker_buy_base_asset_volume",
