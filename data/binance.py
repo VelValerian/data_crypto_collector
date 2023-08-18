@@ -1,10 +1,20 @@
 import pandas as pd
 from binance.um_futures import UMFutures
+from datetime import datetime as date
 
 
-def fetch_historical_data(pair, interval, limit, start_time, end_time):
+def fetch_historical_data(pair, interval, limit, date_start, end_time):
     client = UMFutures()
     klines_df = []
+
+    now = date.now()
+    current_date = now.strftime('%Y-%m-%d %H:%M:%S')
+    # Datetime to ms
+    start_time = int(date.strptime(date_start, '%Y-%m-%d %H:%M:%S').timestamp() * 1000)
+    if not end_time:
+        end_time = int(date.strptime(current_date, '%Y-%m-%d %H:%M:%S').timestamp() * 1000)
+    else:
+        end_time = int(date.strptime(end_time, '%Y-%m-%d %H:%M:%S').timestamp() * 1000)
     #
     # while start_time<end_time:
 
