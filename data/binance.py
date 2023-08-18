@@ -17,8 +17,7 @@ def fetch_historical_data(pair, interval, limit, date_start, end_time):
         end_time = int(date.strptime(end_time, '%Y-%m-%d %H:%M:%S').timestamp() * 1000)
 
     while start_time < end_time:
-        print(start_time)
-        print(type(start_time))
+        print("Loading data...")
         last_time = start_time + (300000 * limit)
         if last_time < end_time:
             klines_data = client.continuous_klines(pair=pair, contractType='PERPETUAL', interval=interval,
@@ -35,4 +34,5 @@ def fetch_historical_data(pair, interval, limit, date_start, end_time):
                                         "quote_asset_volume", "number_of_trades", "taker_buy_base_asset_volume",
                                         "taker_buy_quote_asset_volume", "ignore"])
     df = df.drop_duplicates()
+    df = df.drop(columns=["ignore"])
     return df
